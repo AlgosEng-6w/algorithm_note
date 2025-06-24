@@ -4,7 +4,7 @@
 
 #define max 1000
 
-int Prime(int **graph, int v);
+int Prime(int **graph, int* parent, int v);
 
 // 主要取决于点，适合稠密图
 // prime三部曲：1. 选距离生成树最近节点；2. 最近节点加入生成树；3. 更新minDist数组
@@ -14,24 +14,25 @@ int main(){
     int x, y, k;
     scanf("%d %d",&v, &e);
     int **grid = (int**)malloc((v+1) * sizeof(int*));
-    for (int i = 0; i <= v; i++){
-        grid[i] = (int*)malloc((v+1) * sizeof(int));
-    }
+    int* parent = (int*)malloc((v+1) * sizeof(int));
     for (int i = 0; i <= v; i++) {
+        grid[i] = (int*)malloc((v+1) * sizeof(int));
+        parent[i] = 0;
         for (int j = 0; j <= v; j++) {
             grid[i][j] = (i == j) ? 0 : max;
         }
     }
+
     while(e--){
         scanf("%d %d %d", &x, &y, &k);
         grid[x][y] = k;
         grid[y][x] = k;
     }
-    printf("%d\n",Prime(grid, v));
+    printf("%d\n",Prime(grid, parent, v));
     return 0;
 }
 
-int Prime(int** graph, int v){
+int Prime(int** graph, int* parent, int v){
     int* minDist = (int*)malloc((v+1) * sizeof(int));
     for(int i = 0; i <= v; i++) {
         minDist[i] = max;
@@ -53,8 +54,12 @@ int Prime(int** graph, int v){
         for(int j = 1; j <= v; j++){    // 更新最短距离
             if (!isInTree[j] && graph[cur][j] < minDist[j]){
                 minDist[j] = graph[cur][j];
+                parent[j] = cur;
             }
         }
+    }
+    for (int i = 1; i <= v; i++){
+        printf("%d->%d\n", i, parent[i]);
     }
     int result = 0;
     for (int i = 2; i <= v; i++){
