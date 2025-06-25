@@ -12,7 +12,7 @@ void init(){
 }
 
 int find(int u){        // 寻找根节点
-    return u==father[u] ? u:find(father[u]);
+    return u==father[u] ? u:(father[u] = find(father[u]));
 }
 
 bool isSame(int u, int v){      // 判断两个节点是否在同一个集合
