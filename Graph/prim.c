@@ -4,10 +4,10 @@
 
 #define max 1000
 
-int Prime(int **graph, int* parent, int v);
+int Prim(int **graph, int* parent, int v);
 
 // 主要取决于点，适合稠密图
-// prime三部曲：1. 选距离生成树最近节点；2. 最近节点加入生成树；3. 更新minDist数组
+// prim三部曲：1. 选距离生成树最近节点；2. 最近节点加入生成树；3. 更新minDist数组
 
 int main(){
     int v, e;
@@ -28,11 +28,11 @@ int main(){
         grid[x][y] = k;
         grid[y][x] = k;
     }
-    printf("%d\n",Prime(grid, parent, v));
+    printf("%d\n",Prim(grid, parent, v));
     return 0;
 }
 
-int Prime(int** graph, int* parent, int v){
+int Prim(int** graph, int* parent, int v){
     int* minDist = (int*)malloc((v+1) * sizeof(int));
     for(int i = 0; i <= v; i++) {
         minDist[i] = max;
